@@ -1,0 +1,53 @@
+---
+- name: Create transmission-rss group
+  group:
+    name=transmission-rss
+    system=yes
+    state=present
+  tags: transmission-rss
+
+- name: Create transmission-rss user
+  user:
+    name=transmission-rss
+    append=yes
+    group=transmission-rss
+    shell=/bin/bash
+    system=yes
+    state=present
+  tags: transmission-rss
+
+- name: Install transmission-rss prerequisites
+  apt: name=ruby state=present force=yes
+  tags: transmission-rss
+
+- name: Install transmission-rss gem
+  gem: >
+    name=transmission-rss
+    version={{ transmission_rss_version }}
+    state=present
+    pre_release=true
+  tags: transmission-rss
+
+- name: Install configuration file
+  template: >
+    src=transmission-rss.conf.j2
+    dest={{ transmission_rss_config_path }}
+    owner=transmission-rss
+    group=transmission-rss
+    mode=0644
+  notify: restart transmission-rss
+  tags: transmission-rss
+
+- name: Install init script
+  template: >
+    src=transmission-rss.init.j2
+    dest=/etc/init.d/{{ transmission_rss_service_name }}
+    owner=root
+    group=root
+    mode=0755
+  notify: restart transmission-rss
+  tags: transmission-rss
+
+- name: Ensure transmission-rss service is started and enabled on boot
+  service: name={{ transmission_rss_service_name }} state=started enabled=yes
+  tags: transmission-rss

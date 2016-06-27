@@ -1,0 +1,65 @@
+#! /bin/bash
+### BEGIN INIT INFO
+# Provides:            {{ transmission_rss_service_name }}
+# Required-Start:      $remote_fs $syslog
+# Required-Stop:       $remote_fs $syslog
+# Should-Start:        $local_fs
+# Should-Stop:         $local_fs
+# Default-Start:       2 3 4 5
+# Default-Stop:        0 1 6
+# Short-Description:   Start {{ transmission_rss_service_name }} daemon
+# Description:         Start up {{ transmission_rss_service_name }}
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/local/bin/transmission-rss
+DAEMONNAME={{ transmission_rss_service_name }}
+DESC={{ transmission_rss_service_name }}
+PIDFILE="/home/transmission-rss/{{ transmission_rss_service_name }}.pid"
+
+test -x $DAEMON || exit 0
+
+set -e
+
+. /lib/lsb/init-functions
+
+er_or=0
+
+case "$1" in
+  start)
+       echo -n "Starting $DESC: "
+       start_daemon -p $PIDFILE -- "$DAEMON" -f -p $PIDFILE -c {{ transmission_rss_config_path }} && echo OK || { echo FAIL ; exit 1 ; }
+       ;;
+  stop)
+       echo -n "Stopping $DESC: "
+       killproc -p $PIDFILE "$DAEMON" && echo OK || { echo FAIL ; exit 1 ; }
+       ;;
+
+  restart|force-reload)
+       echo -n "Restarting $DESC: "
+       killproc -p $PIDFILE "$DAEMON" && \
+         start_daemon -p $PIDFILE -- "$DAEMON" -f -p $PIDFILE -c {{ transmission_rss_config_path }} || { echo FAIL ; exit 1 ; }
+       ;;
+
+  status)
+       status_of_proc -p $PIDFILE $DAEMON {{ transmission_rss_service_name }}
+       returnvalue=$(echo $?)
+       if [ "$returnvalue" -ne "0" ]
+       then
+            er_or=$(expr $er_or \+ 1)
+       fi
+       ;;
+  *)
+	N=/etc/init.d/{{ transmission_rss_service_name }}
+	echo "Usage: $N {start|stop|restart|force-reload|status}" >&2
+	exit 1
+	;;
+esac
+
+
+if [ "$er_or" -ne "0" ]
+then
+	exit 2
+else
+	exit 0
+fi

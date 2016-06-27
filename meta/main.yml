@@ -1,0 +1,22 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: tkanemoto
+  description: The transmission-rss daemon
+  license: "license (BSD, MIT)"
+  min_ansible_version: 1.9
+  platforms:
+    - name: Debian
+      versions:
+      - all
+    - name: Ubuntu
+      versions:
+      - all
+  galaxy_tags:
+    - system
+    - web
+    - torrent
+    - transmission
+    - rss
+    - automation

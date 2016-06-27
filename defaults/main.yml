@@ -1,0 +1,23 @@
+---
+transmission_rss_version: 0.1.26
+transmission_rss_service_name: transmission-rss
+transmission_rss_config_path: /etc/transmission-rss.conf
+transmission_rss_config:
+  feeds:
+    - url: http://showrss.info/user/0.rss?magnets=true&namespaces=true&name=clean&quality=null&re=null
+      download_path: /home/transmission-rss/Downloads
+  update_interval: 600
+  add_paused: false
+  server:
+    host: localhost
+    port: 9091
+    rpc_path: /transmission/rpc
+  login:
+    username: transmission
+    password: transmission
+  log_target: '/var/log/{{ transmission_rss_service_name }}.log'
+  privileges:
+    user: transmission-rss
+    group: transmission-rss
+  fork: false
+  pid_file: false

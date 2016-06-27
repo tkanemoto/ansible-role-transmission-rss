@@ -1,0 +1,6 @@
+---
+# handlers file for transmission-rss
+
+- name: restart transmission-rss
+  service: name={{ transmission_rss_service_name }} state=restarted
+  tags: transmission-rss
