@@ -18,7 +18,6 @@
 
 - name: Install transmission-rss prerequisites
   apt: name={{ item }} state=present force=yes
-  tags: transmission-rss
   with_items:
     - ruby
     - ruby-ffi
@@ -41,10 +40,10 @@
   notify: restart transmission-rss
   tags: transmission-rss
 
-- name: Install init script
+- name: Install systemd service
   template: >
-    src=transmission-rss.init.j2
-    dest=/etc/init.d/{{ transmission_rss_service_name }}
+    src=transmission-rss.service.j2
+    dest=/etc/systemd/system/{{ transmission_rss_service_name }}.service
     owner=root
     group=root
     mode=0755
