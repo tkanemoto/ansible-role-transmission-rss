@@ -17,7 +17,11 @@
   tags: transmission-rss
 
 - name: Install transmission-rss prerequisites
-  apt: name=ruby state=present force=yes
+  apt: name={{ item }} state=present force=yes
+  tags: transmission-rss
+  with_items:
+    - ruby
+    - ruby-ffi
   tags: transmission-rss
 
 - name: Install transmission-rss gem
@@ -25,7 +29,6 @@
     name=transmission-rss
     version={{ transmission_rss_version }}
     state=present
-    pre_release=true
   tags: transmission-rss
 
 - name: Install configuration file

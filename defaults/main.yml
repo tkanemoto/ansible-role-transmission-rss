@@ -1,5 +1,5 @@
 ---
-transmission_rss_version: 0.1.26
+transmission_rss_version: 1.0.0
 transmission_rss_service_name: transmission-rss
 transmission_rss_config_path: /etc/transmission-rss.conf
 transmission_rss_config:
