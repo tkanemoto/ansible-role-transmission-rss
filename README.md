@@ -42,7 +42,7 @@ The configuration file path.
       privileges:
         user: transmission-rss
         group: transmission-rss
-      fork: false
+      fork: true
       pid_file: false
 
 The content of the transmission-rss configuration. For configuration examples
@@ -86,7 +86,7 @@ None.
             privileges:
               user: transmission-rss
               group: transmission-rss
-            fork: false
+            fork: true
             pid_file: false
 
 ## License
