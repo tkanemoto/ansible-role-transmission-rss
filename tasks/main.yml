@@ -28,6 +28,7 @@
     name=transmission-rss
     version={{ transmission_rss_version }}
     state=present
+    user_install=no
   tags: transmission-rss
 
 - name: Install configuration file
